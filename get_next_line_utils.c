@@ -22,18 +22,29 @@ size_t ft_strlen(char *str)
     return (i);
 }
 
-char	*ft_strchr(const char *str, int i)
+char	*ft_strchr(const char *string, int c)
 {
-	while (*str != (char)i && *str != 0)
-		str++;
-	if (*str == (char)i)
-		return ((char *)str);
+    int         i;
+    const char  *ptr;
+
+    if (string == NULL)
+        return (NULL);
+    i = 0;
+    ptr = string;
+	while (ptr[i])
+    {
+        if (ptr[i] == (char) c)
+            return ((char *)&ptr[i]);
+        i++;
+    }
+	if (ptr[i] == (char)c)
+		return ((char *)&ptr[i]);
 	return (NULL);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*str;
+	char	*ptr;
     size_t  i;
     size_t  j;
 
@@ -44,16 +55,44 @@ char	*ft_strjoin(char *s1, char *s2)
     }
 	if (!s2)
 		return (NULL);
-	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!str)
+	ptr = (char *)malloc((ft_strlen(s1) + ft_strlen(s2)) + 1 * sizeof(char));
+	if (!ptr)
 		return (NULL);
     i = -1;
     j = 0;
 	while (s1[++i])
-        str[i] = s1[i];
+        ptr[i] = s1[i];
     while (s2[j])
-        str[i++] = s2[j++];
-    str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+        ptr[i++] = s2[j++];
+    ptr[ft_strlen(s1) + ft_strlen(s2)] = '\0';
     free (s1);
-	return (str);
+	return (ptr);
+}
+
+char    *ft_get_single_line(char *str)
+{
+    int     i;
+    char    *ptr;
+
+    i = 0;
+    if (!str[i])
+        return (NULL);
+    while (str[i] && str[i] != '\n')
+        i++;
+    ptr = (char *)malloc((i + 2) * sizeof(char));
+    if (!ptr)
+        return (NULL);
+    i = 0;
+    while (str[i] && str[i] != '\n')
+    {
+        ptr[i] = str[i];
+        i++;
+    }
+    if (str[i] == '\n')
+    {
+        ptr[i] = str[i];
+        i++;
+    }
+    ptr[i] = '\0';
+    return (ptr);
 }
